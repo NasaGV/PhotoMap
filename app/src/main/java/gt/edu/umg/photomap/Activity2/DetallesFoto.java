@@ -1,8 +1,10 @@
 package gt.edu.umg.photomap.Activity2;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
@@ -22,6 +24,8 @@ import com.google.android.gms.location.LocationServices;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import gt.edu.umg.photomap.Activity3.PhotoDatabaseHelper;
 import gt.edu.umg.photomap.R;
 
 public class DetallesFoto extends AppCompatActivity {
@@ -38,6 +42,8 @@ public class DetallesFoto extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detalles_foto);
 
+        EditText etTitulo = findViewById(R.id.editTextTitulo);
+        EditText etDescripcion = findViewById(R.id.editTextDescripcion);
         tvFecha = findViewById(R.id.tvFecha);
         tvUbicacion = findViewById(R.id.tvUbicacion);
         imageView = findViewById(R.id.imageView);
@@ -49,7 +55,9 @@ public class DetallesFoto extends AppCompatActivity {
         btnCamara.setOnClickListener(v -> checkCameraPermission());
 
         btnGuardar.setOnClickListener(v -> {
-            // Implementar lógica para guardar la imagen y la información en la base de datos
+            String titulo = etTitulo.getText().toString();
+            String descripcion = etDescripcion.getText().toString();
+            guardarFotoEnBaseDeDatos(titulo, descripcion);  // Llama al método para guardar en la BD
             Toast.makeText(this, "Información guardada", Toast.LENGTH_SHORT).show();
         });
 
@@ -120,4 +128,28 @@ public class DetallesFoto extends AppCompatActivity {
             }
         }
     }
+
+    private void guardarFotoEnBaseDeDatos(String titulo, String descripcion) {
+        PhotoDatabaseHelper dbHelper = new PhotoDatabaseHelper(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("titulo", titulo);
+        values.put("descripcion", descripcion);
+
+        long newRowId = db.insert("Fotos", null, values);
+        db.close();
+
+        if (newRowId != -1) {
+            Toast.makeText(this, "Foto guardada en la base de datos", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Error al guardar la foto", Toast.LENGTH_SHORT).show();
+        }
+    }
+    // Llama a este método al guardar la foto
+    public void guardarFotoEnBaseDeDatos(String titulo, String descripcion, String fecha, String ubicacion, String rutaImagen) {
+        PhotoDatabaseHelper dbHelper = new PhotoDatabaseHelper(this);
+        dbHelper.guardarFoto(titulo, descripcion, fecha, ubicacion, rutaImagen);
+    }
+
 }

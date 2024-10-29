@@ -7,6 +7,21 @@
     tools:context=".Activity2.DetallesFoto">
 
 
+    <EditText
+        android:id="@+id/editTextTitulo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="16dp"
+        android:hint="Titulo"
+        android:minHeight="48dp"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/tvFecha"
         android:layout_width="0dp"
@@ -33,7 +48,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="116dp"
         android:layout_marginEnd="16dp"
         android:hint="Descripción"
         android:minHeight="48dp"
